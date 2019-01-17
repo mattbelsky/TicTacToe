@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">MyTicTacToe</string>
+    <string name="start">START</string>
+    <string name="youwin">You win!</string>
+    <string name="tie">It\'s a tie!</string>
+    <string name="lose">You lose!</string>
+</resources>
