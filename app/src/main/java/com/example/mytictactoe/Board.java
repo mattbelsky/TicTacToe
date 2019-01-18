@@ -38,7 +38,7 @@ class Board {
     }
 
     public void erase() {
-        marks = new ArrayList<>(asList("","","","","","","",""));
+        marks = new ArrayList<>(asList("", "", "", "", "", "", "", "", ""));
     }
 
     private boolean checkIfAreTheSame(PossibleWin possibleWin, String playerSymbol) {

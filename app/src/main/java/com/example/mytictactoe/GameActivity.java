@@ -17,8 +17,8 @@ public class GameActivity extends AppCompatActivity {
     private final String AI_SYMBOL = "O";
     private Button startButton;
     private Board board;
-    private Player player = new Player(PLAYER_SYMBOL, getString(R.string.youwin));
-    private Player aiPlayer = new Player(AI_SYMBOL, getString(R.string.lose));
+    private Player player;
+    private Player aiPlayer;
     private AiMoveGenerator aiMoveGenerator;
     private boolean gameOver = false;
 
@@ -28,9 +28,10 @@ public class GameActivity extends AppCompatActivity {
         setContentView(R.layout.activity_game);
         initializeUi();
         board = new Board();
+        player = new Player(PLAYER_SYMBOL, getString(R.string.youwin));
+        aiPlayer = new Player(AI_SYMBOL, getString(R.string.lose));
         aiMoveGenerator = new AiMoveGenerator(board);
     }
-
 
     private void initializeUi() {
         gameResultTv = findViewById(R.id.tv_gameResult);
@@ -47,6 +48,7 @@ public class GameActivity extends AppCompatActivity {
                 board.erase();
                 gameResultTv.setText("");
                 enableButtons();
+                gameOver = false;
             }
         });
     }
@@ -93,7 +95,7 @@ public class GameActivity extends AppCompatActivity {
     private void moveAi() {
         Integer aiMove = aiMoveGenerator.getMove();
         if (aiMove != null) {
-            markButton(buttons.get(aiMove), player);
+            markButton(buttons.get(aiMove), aiPlayer);
             markBoard(aiMove, aiPlayer);
             checkWin(aiPlayer);
             checkTie();
@@ -127,7 +129,7 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private void markButton(Button clickedButton, Player player) {
-        clickedButton.setText(PLAYER_SYMBOL);
+        clickedButton.setText(player.getSymbol());
         clickedButton.setClickable(false);
     }
 
