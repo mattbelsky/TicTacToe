@@ -92,19 +92,48 @@ public class GameActivity extends AppCompatActivity {
         }
     }
 
+    // TODO Improve AI move generation.
+    /* Three start scenarios: User starts...
+        1)  On corner
+                Mark middle
+                Loop:
+                    Is a win possible?
+                        Mark square for win
+                    Next player move is a win for them?
+                        Obstruct win (three scenarios)
+                            Positions are next to each other
+                            Positions are corners in the same row/col
+                            Positions are diagonal
+                    Mark empty square in (any) outside row
+                    Check if next move is stalemate
+
+        2)  Outside center
+                Same as corner
+
+        3)  Inside center
+                Mark (any) outside corner
+                Same loop
+     */
     private void moveAi() {
+        int center = 4;
         Integer aiMove = aiMoveGenerator.getMove();
-        if (aiMove != null) {
-            markButton(buttons.get(aiMove), aiPlayer);
-            markBoard(aiMove, aiPlayer);
+
+        // Marks the center square if empty. Checks if next player move is their win and blocks the
+        // win. Marks a random spot otherwise.
+        if (board.isEmpty(center)) markButtonAndBoard(center, aiPlayer);
+        else {
+            if (board.isNextMoveAWin(player)) {
+                aiMove = board.getPositionToBlockWin(player);
+                if (aiMove == null) aiMove = aiMoveGenerator.getMove();
+            }
+            markButtonAndBoard(aiMove, aiPlayer);
             checkWin(aiPlayer);
             checkTie();
         }
     }
 
     private void movePlayer(int playerMove) {
-        markButton(buttons.get(playerMove), player);
-        markBoard(playerMove, player);
+        markButtonAndBoard(playerMove, player);
         checkWin(player);
         checkTie();
     }
@@ -131,6 +160,11 @@ public class GameActivity extends AppCompatActivity {
     private void markButton(Button clickedButton, Player player) {
         clickedButton.setText(player.getSymbol());
         clickedButton.setClickable(false);
+    }
+
+    private void markButtonAndBoard(int move, Player player) {
+        markButton(buttons.get(move), player);
+        markBoard(move, player);
     }
 
     private void disableButtons() {

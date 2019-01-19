@@ -11,9 +11,6 @@ class AiMoveGenerator {
         this.board = board;
     }
 
-    // TODO Improve AI move generation.
-    /*
-     */
     public Integer getMove() {
         if (board.isFull()) return null;
         while (true) {
